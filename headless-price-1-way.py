@@ -76,7 +76,7 @@ class FlightInfo:
 #
 # Save Flight Info
 #
-def saveFlightInfo(info, file):
+def saveFlightInfo(info ):
     row = str(datetime.now())
     row += ", "
     row += info.getDepartureCity()
@@ -97,7 +97,16 @@ def saveFlightInfo(info, file):
     if (info.isNonstop()):
         row += ", nonstop"
     row += "\n"
-    file.write(row)
+
+    try:
+        csvFile = open(filename, "r")
+    except:
+        csvFile = open(filename, "w")
+        csvFile.write("Log Date, Departure, Arrival, Date, Flight, DepartTime, ArriveTime, Duration, Cost, Nonstop\n")
+        csvFile.close()
+    csvFile = open(filename, "a")
+    csvFile.write(row)
+    csvFile.close()
 
 def getFlightCosts(job):
     DEPARTURE = job.depart
@@ -176,15 +185,15 @@ def getFlightCosts(job):
 
             # Save Results
             flight = FlightInfo( DEPARTURE, ARRIVAL, DEPART_DATE, departTime, arrivalTime, duration, price, isNonstop, flightNum)
-            csvFile = open(filename, "a")
-            saveFlightInfo( flight, csvFile )
-            csvFile.close()
+
+            saveFlightInfo( flight )
         print("--Flight costs saved")
     except NoSuchElementException:
         print("Can't find element")
         browser.close()
         return
     browser.close()
+
 #
 # MAIN:
 #
