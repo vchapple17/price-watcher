@@ -2,11 +2,12 @@ from selenium import webdriver
 from datetime import datetime
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
+from CONSTANTS import CONSTANTS
 #
 # Flight class:
 #
 class FlightInfo:
-    filename = "flight_log.csv"
+    filename = CONSTANTS.FLIGHT_FILENAME()#"flight_log.csv"
     page_url = "https://www.southwest.com/"
     # SCREENSHOT = "/Users/valchapple/Documents/price-watcher/screen.png"
 
@@ -162,3 +163,8 @@ class FlightInfo:
             browser.close()
             return
         browser.close()
+
+    # Return flight cost data
+    @staticmethod
+    def getJobData(job):
+        pass
