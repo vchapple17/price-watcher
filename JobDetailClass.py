@@ -11,6 +11,14 @@ class JobDetail:
         self.arrive = arrive
         self.day = day
         self.flightType = flightType
+    def getDepartCity(self):
+        return self.depart
+    def getArriveCity(self):
+        return self.arrive
+    def getDepartDay(self):
+        return self.day
+    def getFlightType(self):
+        return self.flightType
 
     def getDetailsLine(self):
         return str(self.depart + " to " + self.arrive + " on " + self.day + " (class "+ self.flightType + ")")

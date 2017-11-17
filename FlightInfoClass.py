@@ -9,12 +9,13 @@ from CONSTANTS import CONSTANTS
 class FlightInfo:
     filename = CONSTANTS.FLIGHT_FILENAME()#"flight_log.csv"
     page_url = "https://www.southwest.com/"
-    # SCREENSHOT = "/Users/valchapple/Documents/price-watcher/screen.png"
+    SCREENSHOT = "/Users/valchapple/Documents/price-watcher/screen.png"
 
-    def __init__(self, departureCity, arrivalCity, departDate, departTime, arriveTime, duration, cost, isNonstop, flightNo):
+    def __init__(self, departureCity, arrivalCity, departDate, flightType, flightNo, departTime, arriveTime, duration, cost, isNonstop ):
         self.departureCity = departureCity
         self.arrivalCity = arrivalCity
         self.departDate = departDate
+        self.flightType = flightType
         self.departTime = departTime
         self.arriveTime = arriveTime
         self.duration = duration
@@ -27,6 +28,10 @@ class FlightInfo:
         return self.arrivalCity
     def getDepartDate(self):
         return self.departDate
+    def getFlightType(self):
+        return self.flightType
+    def getFlightNo(self):
+        return self.flightNo
     def getDepartTime(self):
         return self.departTime
     def getArriveTime(self):
@@ -37,8 +42,7 @@ class FlightInfo:
         return self.cost
     def isNonstop(self):
         return self.nonstop
-    def getFlightNo(self):
-        return self.flightNo
+
 
     #
     # Save Flight Info to Files
@@ -51,6 +55,8 @@ class FlightInfo:
         row += self.getArrivalCity()
         row += ", "
         row += self.getDepartDate()
+        row += ", "
+        row += self.getFlightType()
         row += ", "
         row += self.getFlightNo()
         row += ", "
@@ -69,7 +75,7 @@ class FlightInfo:
             csvFile = open(FlightInfo.filename, "r")
         except:
             csvFile = open(FlightInfo.filename, "w")
-            csvFile.write("Log Date, Departure, Arrival, Date, Flight, DepartTime, ArriveTime, Duration, Cost, Nonstop\n")
+            csvFile.write("Log Date, Departure, Arrival, Date, Type, Flight, DepartTime, ArriveTime, Duration, Cost, Nonstop\n")
             csvFile.close()
         csvFile = open(FlightInfo.filename, "a")
         csvFile.write(row)
@@ -93,10 +99,10 @@ class FlightInfo:
             browser = webdriver.Chrome()
 
         try:
+            print("Job: " + DEPARTURE + " to " + ARRIVAL + " on " + DEPART_DATE + " class: " + FLIGHT_TYPE)
             # Open Itenerary Page
             browser.get(FlightInfo.page_url)
-            print("Job: " + DEPARTURE + " to " + ARRIVAL + " on " + DEPART_DATE + " class: " + FLIGHT_TYPE)
-            print("--Filling out Request")
+            print("--Filling out Request...")
             radio = browser.find_element_by_xpath('//*[@id=\"trip-type-one-way\"]')
             radio.send_keys(" ")
             browser.find_element_by_id('air-city-departure').clear()
@@ -108,11 +114,12 @@ class FlightInfo:
             submitBtn = browser.find_element_by_id('jb-booking-form-submit-button')
             #browser.get_screenshot_as_file(FlightInfo.SCREENSHOT)
         except NoSuchElementException:
-            print("Can't find element")
+            print("Can't find element in submission form")
+            browser.get_screenshot_as_file(FlightInfo.SCREENSHOT)
             browser.close()
             return
 
-        print("--Submitting Request For Flights.")
+        print("--Submitting Request For Flights...")
         submitBtn.click()
 
 
@@ -120,51 +127,119 @@ class FlightInfo:
             numDepartFlights = len(browser.find_elements_by_xpath('//*[@id=\"faresOutbound\"]/tbody/tr'))
         except NoSuchElementException:
             print("Can't find number of flights element")
+            browser.get_screenshot_as_file(FlightInfo.SCREENSHOT)
             browser.close()
             return
-        try:
-            for i in range(1, numDepartFlights+1):
+
+        # Iterate through each flight
+        for i in range(1, numDepartFlights+1):
+            try:
                 # Price
                 priceCellId = "Out" + str(i) + FLIGHT_TYPE + "Container"
                 price = browser.find_element_by_xpath("//*[@id=\"" + priceCellId + "\"]/div/div[2]/div/label[1]").text
+
                 price = price.replace("$","")
                 price = int(price)
+            except NoSuchElementException:
+                print("Can't find price cell: " + priceCellId )
+                browser.get_screenshot_as_file(FlightInfo.SCREENSHOT)
+                continue
 
+            try:
                 # Flight Number
                 flightNumCell = browser.find_element_by_xpath("//*[@id=\"outbound_flightRow_" + str(i) + "\"]/td[3]/div/span/span/span[2]/a").text
                 flightNum = flightNumCell.split()[0]
+            except NoSuchElementException:
+                print("Can't find flight cell.")
+                browser.get_screenshot_as_file(FlightInfo.SCREENSHOT)
+                continue
 
-                #//*[@id="outbound_flightRow_1"]/td[3]/div/span/span[3]/span[2]/a
-
-                #print(flightNum)
+            try:
                 # Depart time
                 departTime = browser.find_element_by_xpath("//*[@id=\"outbound_flightRow_"+ str(i) + "\"]/td[1]/div[2]/span").text.replace("\n", " ")
+            except NoSuchElementException:
+                print("Can't find depart time cell.")
+                browser.get_screenshot_as_file(FlightInfo.SCREENSHOT)
+                continue
 
+            try:
                 # Arrival time
                 arrivalTime = browser.find_element_by_xpath("//*[@id=\"outbound_flightRow_"+ str(i) + "\"]/td[2]/div/span").text.replace("\n", " ")
+            except NoSuchElementException:
+                print("Can't find arrival time cell.")
+                browser.get_screenshot_as_file(FlightInfo.SCREENSHOT)
+                continue
 
+            try:
                 # Duration
                 duration = browser.find_element_by_xpath("//*[@id=\"outbound_flightRow_" + str(i) + "\"]/td[5]/div/span").text
-
+            except NoSuchElementException:
+                print("Can't find duration cell.")
+                browser.get_screenshot_as_file(FlightInfo.SCREENSHOT)
+                continue
+            try:
                 # Routing ... Nonstop or not? True/False
                 routingCell = browser.find_element_by_xpath("//*[@id=\"outbound_flightRow_"+ str(i)+ "\"]/td[4]/div/span[2]/a").text
+            except NoSuchElementException:
+                print("Can't find nonstop cell.")
+                browser.get_screenshot_as_file(FlightInfo.SCREENSHOT)
+                continue
 
-                isNonstop = False
-                if (routingCell.split()[0] == "Nonstop"):
-                    isNonstop = True
+            isNonstop = False
+            if (routingCell.split()[0] == "Nonstop"):
+                isNonstop = True
 
-                # Save Results
-                flight = FlightInfo( DEPARTURE, ARRIVAL, DEPART_DATE, departTime, arrivalTime, duration, price, isNonstop, flightNum)
-
-                flight.save()
-            print("--Flight costs saved")
-        except NoSuchElementException:
-            print("Can't find element")
-            browser.close()
-            return
+            # Save Results
+            flight = FlightInfo( DEPARTURE, ARRIVAL, DEPART_DATE, FLIGHT_TYPE, flightNum, departTime, arrivalTime, duration, price, isNonstop)
+            flight.save()
         browser.close()
 
     # Return flight cost data
     @staticmethod
     def getJobData(job):
+        # Validate Job Details
+
+        # Try to open File to read
+        try:
+            csvFile = open(FlightInfo.filename, "r")
+        except:
+            print("error reading flight information.")
+            exit()
+
+        # Keep data that matches Job
+        jobData = [[]]
+        # Double array where each row is a flight
+        # a flight is equivalent if:
+            # job details match (city, city, date, type)
+            # flightNum is same
+            # departtime is same
+            # arrivetime is same
+            # duration is same
+            # nonstop is same
+
+        # Need to SORT!!!!!
+
+        for line in csvFile.readline():
+            cells = line.split(",")
+            logDateStr = cells[0]   # Date of data point
+            departCity = cells[1]
+            arriveCity = cells[2]
+            departDate = cells[3]
+            flightType = cells[4]
+            flightNum = cells[5]
+            departTime = cells[6]
+            arriveTime = cells[7]
+            duration = cells[8]
+            cost = cells[9]
+            boolNonstop = cells[10]
+
+
+            # Save Graph data
+
+            #priceStr =
+
+            # Type of FLight (A, B, C)
+
+
+
         pass
