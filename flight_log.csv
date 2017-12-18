@@ -1,4 +1,4 @@
-Log Date, Departure, Arrival, Date, Flight, DepartTime, ArriveTime, Duration, Cost, Nonstop
+Log Date, Departure, Arrival, Date, Type, Flight, DepartTime, ArriveTime, Duration, Cost, Nonstop
 2017-11-10 00:37:28.552188, MCI, LAS, 02/02/2018, C, 1095, 5:25 AM, 6:40 AM, 3h 15m, 187, nonstop
 2017-11-10 00:37:28.790432, MCI, LAS, 02/02/2018, C, 818, 6:10 AM, 9:30 AM, 5h 20m, 170
 2017-11-10 00:37:29.013668, MCI, LAS, 02/02/2018, C, 1233, 6:40 AM, 10:35 AM, 5h 55m, 220
