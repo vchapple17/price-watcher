@@ -56,7 +56,7 @@ class JobDetail:
                     flights[flightDetail].append( array )
                 except:
                     flights[flightDetail] = [ array ]
-                print (flightDetail, flights[flightDetail])
+                # print (flightDetail, flights[flightDetail])
         data = []
 
         for key, flight in flights.iteritems():
@@ -64,7 +64,6 @@ class JobDetail:
             data_y = []
             data_name = flight[0][5] + " @ " + flight[0][6]
             for i in range(len(flight)):
-                print(flight[i])
                 data_x.append(datetime.datetime.strptime(flight[i][0], "%Y-%m-%d %H:%M:%S.%f"))
                 data_y.append(int(flight[i][9]))
 
