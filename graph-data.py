@@ -1,24 +1,56 @@
-import plotly.plotly as py
-import plotly.graph_objs as go
+# Python 2.7
 import csv
 
 from JobDetailClass import JobDetail
 # from FlightInfoClass import FlightInfo
 
-dataFile = "flight_log.csv"
-try:
-    f = open(dataFile, 'r')        # read
-except IOError:
-    print("Could not read file:", fname)
-    sys.exit(1)
 
-with f:
-    reader = csv.reader(f)
-    for row in reader:
-        if row[4] == 1095:
-            print("1095")
+#
+# MAIN:
+#
+# Search for flight prices for all future jobs
+# Save new flight prices
+def main():
+    # Get Job details
+    jobs = JobDetail.getJobDetailsArray()
 
-        pass #do stuff here
+    # ask user which job to graph
+    selection = 0
+    while(selection < 1 or selection > len(jobs)):
+        print("Select Flight Description")
+        for i in range(len(jobs)):
+            print("\t" + str(i+1) + " - " + jobs[i].getDetailsLine())
+        selection = input("Selection: " )
+        try:
+            selection = int(selection)
+        except:
+            selection = 0
+    selection -= 1      #adjust indexing
+
+    # Get array of Trace Data for Job selction
+    jobs[selection].graphTraces()
+if __name__ == "__main__":
+    main()
+
+
+
+
+# dataFile = "flight_log.csv"
+# try:
+#     f = open(dataFile, 'r')        # read
+# except IOError:
+#     print("Could not read file:", fname)
+#     sys.exit(1)
+#
+# with f:
+#     reader = csv.reader(f, delimiter=',')
+#
+#     for row in reader:
+#         print(row[4].strip())
+#         if row[4] == "1095":
+#             print("1095")
+#
+#         pass #do stuff here
 
 
 # Get Data and Price for each Flight in job
