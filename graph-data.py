@@ -1,20 +1,43 @@
 import plotly.plotly as py
 import plotly.graph_objs as go
+import csv
 
-import pandas as pd
+from JobDetailClass import JobDetail
+# from FlightInfoClass import FlightInfo
 
-df = pd.read_csv("https://raw.githubusercontent.com/vchapple17/price-watcher/master/flight_log.csv?token=AKQQJum8IJF17oNxPlZTvDPGjwYAGqduks5aDoSTwA%3D%3D")
+dataFile = "flight_log.csv"
+try:
+    f = open(dataFile, 'r')        # read
+except IOError:
+    print("Could not read file:", fname)
+    sys.exit(1)
 
-data = [go.Scatter(
-          x=df.Date,
-          y=df['AAPL.Close'])]
+with f:
+    reader = csv.reader(f)
+    for row in reader:
+        if row[4] == 1095:
+            print("1095")
+
+        pass #do stuff here
+
+
+# Get Data and Price for each Flight in job
+# class Graph:
+#     def __init__(self, job):
+#         self.job = job
+#
+#
+# data = [go.Scatter(
+#           x=df.Date,
+#           y=df['AAPL.Close']),
+#           text="Hello"]
 
 # Create traces
 #https://plot.ly/python/line-and-scatter/
 
 # 1 graph for each job?
-# multiple traces (number of flights that day for each graph.
-#
+# multiple traces (number of flights) that day for each graph.
+
 #
 # trace0 = go.Scatter(
 #     x = random_x,
