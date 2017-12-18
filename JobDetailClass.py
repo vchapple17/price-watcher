@@ -53,30 +53,32 @@ class JobDetail:
             if job == array[1] + array[2] + array[3] + array[4]:
                 flightDetail = array[5] + array[6] + array[7] + array[8]
                 try:
-                    flights[flightDetail].append( ( array[0], array[9] ) )
+                    flights[flightDetail].append( array )
                 except:
-                    flights[flightDetail] = [ ( array[0], array[9] ) ]
+                    flights[flightDetail] = [ array ]
                 print (flightDetail, flights[flightDetail])
         data = []
 
         for key, flight in flights.iteritems():
             data_x = []
             data_y = []
+            data_name = flight[0][5] + " @ " + flight[0][6]
             for i in range(len(flight)):
+                print(flight[i])
                 data_x.append(datetime.datetime.strptime(flight[i][0], "%Y-%m-%d %H:%M:%S.%f"))
-                data_y.append(int(flight[i][1]))
+                data_y.append(int(flight[i][9]))
 
             data.append(
                 go.Scatter(
                     x = data_x,
                     y = data_y,
                     mode = 'lines+markers',
-                    name = key
+                    name = data_name
                 )
             )
         # Graph Data
         layout = go.Layout(
-            title='A Simple Plot',
+            title=self.getDetailsLine(),
             font=dict(size=16),
             width=800,
             height=640
