@@ -49,33 +49,33 @@ class FlightInfo:
     #
     def save(self):
         row = str(datetime.now())
-        row += ", "
+        row += ","
         row += self.getDepartureCity()
-        row += ", "
+        row += ","
         row += self.getArrivalCity()
-        row += ", "
+        row += ","
         row += self.getDepartDate()
-        row += ", "
+        row += ","
         row += self.getFlightType()
-        row += ", "
+        row += ","
         row += self.getFlightNo()
-        row += ", "
+        row += ","
         row += self.getDepartTime()
-        row += ", "
+        row += ","
         row += self.getArriveTime()
-        row += ", "
+        row += ","
         row += self.getDuration()
-        row += ", "
+        row += ","
         row += str(self.getCost())
         if (self.isNonstop()):
-            row += ", nonstop"
+            row += ",nonstop"
         row += "\n"
 
         try:
             csvFile = open(FlightInfo.filename, "r")
         except:
             csvFile = open(FlightInfo.filename, "w")
-            csvFile.write("Log Date, Departure, Arrival, Date, Type, Flight, DepartTime, ArriveTime, Duration, Cost, Nonstop\n")
+            csvFile.write("Log Date,Departure,Arrival,Date,Type,Flight,DepartTime,ArriveTime, Duration,Cost,Nonstop\n")
             csvFile.close()
         csvFile = open(FlightInfo.filename, "a")
         csvFile.write(row)
