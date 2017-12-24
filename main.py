@@ -46,7 +46,7 @@ def main():
         try:
             selection = int(selection)
         except:
-            selection == -1
+            selection = -1
 
     db = database(user, password, host, db)
     if selection == 1:
@@ -54,7 +54,7 @@ def main():
     elif selection == 2:
         db.runPriceChecks()
     elif selection == 3:
-        graphJobs(db)
+        db.graphJobs()
     else:
         print("ERROR")
         sys.exit()
@@ -63,16 +63,7 @@ def main():
 
 def manageJobs(db):
     print("Manage jobs")
-    pass
 
-def priceCheck(db):
-    print("Run price check")
-
-    pass
-
-def graphJobs(db):
-    print("graph")
-    pass
 
 if __name__ == "__main__":
     main()

@@ -6,6 +6,12 @@ from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
 import sys
 
+import plotly.offline as offline
+import plotly.graph_objs as go
+
+#import numpy as np
+
+
 class database:
     def __init__(self, u, p, h, d):
         self._page_url = "https://www.southwest.com/"
@@ -36,6 +42,20 @@ class database:
                 return result
         except:
             print("error getActiveFutureJobs")
+            return None
+
+    def _getJobs(self):
+        try:
+            with self._connection.cursor() as cursor:
+                # Read All future and active jobs within 6 months
+                sql = "SELECT j.job_id, j.day, j.dep, j.arr, j.class_type, j.status, c.code as dep, c2.code as arr FROM `job` j "
+                sql += "INNER JOIN `city` c ON c.city_id = j.dep "
+                sql += "INNER JOIN `city` c2 ON c2.city_id = j.arr;"
+                cursor.execute(sql,)
+                result = cursor.fetchall()
+                return result
+        except:
+            print("error _getJobs")
             return None
 
     def _saveFlightPrices(self, job):
@@ -237,8 +257,119 @@ class database:
         except:
             print("ERROR: _saveFlightPrice")
 
+    def _getPricesByFlightId(self, flight_id):
+        try:
+            with self._connection.cursor() as cursor:
+                # Read
+                sql = "SELECT created_on, price FROM `price` "
+                sql += "WHERE flight=%s;"
+                cursor.execute(sql, (flight_id))
+                result = cursor.fetchall()
+                return result
+        except:
+            return  None
+
+    def _getFlightsByJobId(self, job_id):
+        try:
+            with self._connection.cursor() as cursor:
+                # Read city id from code
+                sql = "SELECT flight_id, num, dep, arr, dur, nonstop FROM `flight` "
+                sql += "WHERE job=%s;"
+                cursor.execute(sql, (job_id))
+                result = cursor.fetchall()
+                return result
+        except:
+            return  None
+
+    def _graphJob(self, job):
+        # print("GRAPHING JOB")
+        offline.init_notebook_mode()
+
+        # Job Info
+        departCity = job["c.dep"]
+        arriveCity = job["c2.arr"]
+        day = job["day"]
+        class_type = job["class_type"]
+
+        # Graph File Name
+        graph_name = "graph_"
+        graph_name += departCity + "_"
+        graph_name += arriveCity + "_"
+        graph_name += str(day) + "_"
+        graph_name += class_type
+
+        flights = self._getFlightsByJobId( job["job_id"] )
+
+        # Get flight prices
+        data = []
+        for f in flights:
+            data_x = []
+            data_y = []
+
+            departTime = f["dep"] + datetime.strptime("2000-01-01", "%Y-%M-%d")
+            data_name = (str(f["num"]) + " @ " + departTime.strftime("%I:%M %p")).lower()
+
+            if f["nonstop"] == 1:
+                data_name += (" ***")
+
+            # Get Date and Prices Array for this flight
+            date_price = self._getPricesByFlightId(f["flight_id"])
+            for i in date_price:
+                data_x.append(i["created_on"])
+                data_y.append(int(i["price"]))
+
+            if f["nonstop"] == 1:
+                vis = True
+            else:
+                vis = "legendonly"
+
+            data.append(
+                go.Scatter(
+                    x = data_x,
+                    y = data_y,
+                    mode = 'lines+markers',
+                    name = data_name,
+                    visible = vis
+                )
+            )
+        # Graph Data
+        layout = go.Layout(
+            title=departCity + " to " + arriveCity + " on " + str(day),
+            font=dict(size=16),
+            width=800,
+            height=640
+        )
+
+        offline.plot(
+            { 'data': data, 'layout': layout},
+            image='png'
+        )
+        return
 
 
+    def graphJobs(self):
+        print("Select job to graph: ")
+        # Get jobs
+        result = self._getJobs()
+
+        # Graph Selection MENU
+        s = 0
+        while s < 1 or s > n+1:
+            n = len(result)
+            for i in range(0, n):
+                print(str(i+1) + " - " + result[i]["c.dep"] + " to " + result[i]["c2.arr"] + " on " + str(result[i]["day"]))
+            print(str(n+1) + " - Back")
+
+            prompt = ">> "
+            s = raw_input(prompt)
+            try:
+                s = int(s)
+            except:
+                s = -1
+        s -= 1  # Adjust selection s to match zero-indexing
+
+        # Graph selected job
+        self._graphJob(result[s])
 
 
     def runPriceChecks(self):
@@ -246,12 +377,15 @@ class database:
         for i in result:
             self._saveFlightPrices(i)
 
-        # try:
-        #     with connection.cursor() as cursor:
-        #     # Create a new record
-        #     sql = "INSERT INTO `users` (`email`, `password`) VALUES (%s, %s)"
-        #     cursor.execute(sql, ('webmaster@python.org', 'very-secret'))
-        #
-        # # connection is not autocommit by default. So you must commit to save
-        # # your changes.
-        # connection.commit()
+
+
+
+# try:
+#     with connection.cursor() as cursor:
+#     # Create a new record
+#     sql = "INSERT INTO `users` (`email`, `password`) VALUES (%s, %s)"
+#     cursor.execute(sql, ('webmaster@python.org', 'very-secret'))
+#
+# # connection is not autocommit by default. So you must commit to save
+# # your changes.
+# connection.commit()
