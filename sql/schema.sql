@@ -30,6 +30,7 @@ CREATE TABLE `flight` (
   num INT(11) NOT NULL,
   dep TIME,
   arr TIME,
+  dur VARCHAR(255),
   nonstop BOOLEAN,
   status ENUM('ACTIVE', 'INACTIVE') NOT NULL,
   job INT(11),

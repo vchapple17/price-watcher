@@ -2,6 +2,10 @@
 from config import database
 import sys
 
+# from JobDetailClass import JobDetail
+# from FlightInfoClass import FlightInfo
+# from datetime import date, timedelta, datetime, time
+
 #
 # MAIN:
 #
@@ -27,7 +31,48 @@ def main():
     except:
         db = 'price_watcher'
 
-    database(user, password, host, db)
+    # MAIN MENU
+    selection = 0
+    numOptions = 3
+    while selection < 1 or selection > numOptions:
+        prompt  = " MENU\n"
+        prompt += "======\n"
+        prompt += "1 - Manage Jobs\n"
+        prompt += "2 - Run Price Check\n"
+        prompt += "3 - Graph Prices\n"
+        prompt += ">> "
+
+        selection = raw_input(prompt)
+        try:
+            selection = int(selection)
+        except:
+            selection == -1
+
+    db = database(user, password, host, db)
+    if selection == 1:
+        manageJobs(db)
+    elif selection == 2:
+        db.runPriceChecks()
+    elif selection == 3:
+        graphJobs(db)
+    else:
+        print("ERROR")
+        sys.exit()
+
+
+
+def manageJobs(db):
+    print("Manage jobs")
+    pass
+
+def priceCheck(db):
+    print("Run price check")
+
+    pass
+
+def graphJobs(db):
+    print("graph")
+    pass
 
 if __name__ == "__main__":
     main()
