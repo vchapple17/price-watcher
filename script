@@ -1,0 +1,4 @@
+#!/bin/bash
+echo >> log.txt
+date >> log.txt
+python script.py >> log.txt &

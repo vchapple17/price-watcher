@@ -1,0 +1,86 @@
+
+Wed Jan  3 14:59:10 CST 2018
+Job: MCI to LAS on 02/02/2018 class: C
+--Filling out Request...
+--Submitting Request For Flights...
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+Job: LAS to MCI on 02/05/2018 class: C
+--Filling out Request...
+--Submitting Request For Flights...
+SUCCESS: _saveFlightPrice
+Can't find price cell: Out2CContainer
+SUCCESS: _saveFlightPrice
+Can't find price cell: Out4CContainer
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+
+
+Wed Jan  3 15:00:10 CST 2018
+Job: MCI to LAS on 02/02/2018 class: C
+--Filling out Request...
+--Submitting Request For Flights...
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+Job: LAS to MCI on 02/05/2018 class: C
+--Filling out Request...
+--Submitting Request For Flights...
+SUCCESS: _saveFlightPrice
+Can't find price cell: Out2CContainer
+SUCCESS: _saveFlightPrice
+Can't find price cell: Out4CContainer
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+SUCCESS: _saveFlightPrice
+

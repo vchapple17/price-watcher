@@ -14,7 +14,7 @@ def main():
     try:
         user = sys.argv[1]
     except:
-        user = 'user'
+        user = 'price_watcher'
 
     try:
         host = sys.argv[2]
@@ -30,6 +30,8 @@ def main():
         db = sys.argv[4]
     except:
         db = 'price_watcher'
+
+    db = database(user, password, host, db)
 
     # MAIN MENU
     selection = 0
@@ -48,7 +50,7 @@ def main():
         except:
             selection = -1
 
-    db = database(user, password, host, db)
+
     if selection == 1:
         manageJobs(db)
     elif selection == 2:
