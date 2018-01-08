@@ -1,4 +1,4 @@
-import pymysql.cursors
+import pymysql.cursors, pymysql.err
 from selenium import webdriver
 from datetime import datetime
 import time
@@ -18,9 +18,10 @@ class database:
         # Connect to the database
         try:
             self._connection = pymysql.connect(host = h, user = u, password = p, db = d, charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
-        except:
-            print("ERROR")
-            exit()
+            # print(self._connection)
+        except pymysql.err.OperationalError as e:
+            print(e[1])
+            sys.exit()
 
     def __del__(self):
         try:
